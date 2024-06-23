@@ -50,10 +50,10 @@ local palette = Palette.derive(bg, bg == "dark" and {
 	keyword_return = "#f3dc6c",
 	label = "#8cafb0",
 	loop = "#f3dc6c",
-	macro = "#d8f0e6",
+	macro = "#f49b3b",
 	message = "#d8f0e6",
 	method = "#f49b3b",
-	namespace = "#f49b3b",
+	namespace = "#d8f0e6",
 	number = "#b383c6",
 	ok = "#41a886",
 	operator = "#8cafb0",
@@ -65,7 +65,8 @@ local palette = Palette.derive(bg, bg == "dark" and {
 	punctuation_bracket = "#8cafb0",
 	punctuation_delimiter = "#8cafb0",
 	punctuation_special = "#8cafb0",
-	search = "#775f9e",
+	search = "#952099",
+	search_inactive = "#641566",
 	select = "#952099",
 	special = "#ddb4fa",
 	statement = "#f3dc6c",
@@ -76,8 +77,8 @@ local palette = Palette.derive(bg, bg == "dark" and {
 	string_special = "#ddb4fa",
 	structure = "#4697b8",
 	syntax_error = "#ce5c59",
-	tag = "#2d9caa",
-	tag_attribute = "#d8f0e6",
+	tag = "#f49b3b",
+	tag_attribute = "#f3dc6c",
 	tag_delimiter = "#8cafb0",
 	text = "#d8f0e6",
 	text_contrast_bg_high = "#8cafb0",
@@ -215,6 +216,93 @@ local terminal_palette = {
 local groups = Highlite.groups("default", palette)
 
 --[[ Override Groups ]]
+groups.Conditional = { fg = palette.conditional }
+groups.Repeat = { fg = palette.loop }
+groups.StorageClass = { fg = palette.storage }
+groups.Structure = { fg = palette.structure }
+
+groups.CurSearch = { bg = palette.search }
+groups.IncSearch = { bg = palette.search_inactive }
+groups.Search = { bg = palette.search_inactive }
+
+groups.DiagnosticError = { fg = palette.error, italic = true }
+groups.DiagnosticHint = { fg = palette.hint, italic = true }
+groups.DiagnosticInfo = { fg = palette.info, italic = true }
+groups.DiagnosticOk = { fg = palette.ok, italic = true }
+groups.DiagnosticWarn = { fg = palette.warning, italic = true }
+
+groups.MatchParen = { bg = palette.search }
+
+groups.Directory = { fg = palette.class, bold = true }
+
+groups.LspReferenceRead = { bg = palette.search_inactive }
+groups.LspReferenceWrite = { bg = palette.search_inactive }
+
+-- Treesitter
+groups["@keyword.conditional"] = { fg = palette.conditional, nocombine = true }
+groups["@keyword.operator"] = { fg = palette.keyword, italic = true, nocombine = true }
+groups["@keyword.repeat"] = { fg = palette.loop, nocombine = true }
+groups["@module"] = { fg = palette.namespace, italic = true }
+groups["@string.escape"] = { fg = palette.string_escape, nocombine = true }
+groups["@tag"] = { fg = palette.tag, nocombine = true }
+groups["@tag.attribute"] = { fg = palette.tag_attribute, italic = true, nocombine = true }
+
+-- neo-tree groups
+groups.NeoTreeCursorLine = { fg = palette.text, bg = palette.bg_contrast_low }
+groups.NeoTreeDimText = "Comment"
+groups.NeoTreeDirectoryIcon = "Directory"
+groups.NeoTreeDirectoryName = "Directory"
+groups.NeoTreeDotfile = "Comment"
+groups.NeoTreeFileIcon = "Normal"
+groups.NeoTreeFileName = "Normal"
+groups.NeoTreeFileNameOpened = "Special"
+groups.NeoTreeFilterTerm = "Comment"
+groups.NeoTreeFloatBorder = "Pmenu"
+groups.NeoTreeFloatTitle = "PmenuSBar"
+groups.NeoTreeTitleBar = "PmenuSel"
+-- NeoTreeGitAdded           File name when the git status is added.
+-- NeoTreeGitConflict        File name when the git status is conflict.
+-- NeoTreeGitDeleted         File name when the git status is deleted.
+-- NeoTreeGitIgnored         File name when the git status is ignored.
+-- NeoTreeGitModified        File name when the git status is modified.
+-- NeoTreeGitUnstaged        Used for git unstaged symbol.
+-- NeoTreeGitUntracked       File name when the git status is untracked.
+-- NeoTreeGitStaged          Used for git staged symbol.
+groups.NeoTreeHiddenByName = "Comment"
+groups.NeoTreeIndentMarker = "WinSeparator"
+groups.NeoTreeExpander = "Directory"
+-- NeoTreeNormal             |hl-Normal| override in Neo-tree window.
+-- NeoTreeNormalNC           |hl-NormalNC| override in Neo-tree window.
+-- NeoTreeSignColumn         |hl-SignColumn| override in Neo-tree window.
+-- NeoTreeStatusLine         |hl-StatusLine| override in Neo-tree window.
+-- NeoTreeStatusLineNC       |hl-StatusLineNC| override in Neo-tree window.
+-- NeoTreeVertSplit          |hl-VertSplit| override in Neo-tree window.
+-- NeoTreeWinSeparator       |hl-WinSeparator| override in Neo-tree window.
+-- NeoTreeEndOfBuffer = { fg = mane_outline },
+groups.NeoTreeRootName = "Title"
+groups.NeoTreeSymbolicLinkTarget = { fg = palette.uri }
+groups.NeoTreeWindowsHidden = "Comment"
+
+-- NVIM-Notify Groups
+groups.NotifyBackground = { bg = palette.bg }
+groups.NotifyERRORBorder = { fg = palette.error }
+groups.NotifyWARNBorder = { fg = palette.warning }
+groups.NotifyINFOBorder = { fg = palette.info }
+groups.NotifyDEBUGBorder = "NotifyWARNBorder"
+groups.NotifyTRACEBorder = { fg = palette.hint }
+groups.NotifyERRORIcon = "NotifyERRORBorder"
+groups.NotifyWARNIcon = "NotifyWARNBorder"
+groups.NotifyINFOIcon = "NotifyINFOBorder"
+groups.NotifyDEBUGIcon = "NotifyDEBUGBorder"
+groups.NotifyTRACEIcon = "NotifyTRACEBorder"
+groups.NotifyERRORTitle = "NotifyERRORBorder"
+groups.NotifyWARNTitle = "NotifyWARNBorder"
+groups.NotifyINFOTitle = "NotifyINFOBorder"
+groups.NotifyDEBUGTitle = "NotifyDEBUGBorder"
+groups.NotifyTRACETitle = "NotifyTRACEBorder"
+
+-- bash
+groups["@constant.bash"] = { fg = palette.variable }
 
 --[[ Generate ]]
 Highlite.generate("highlite-coloratura", groups, terminal_palette)
